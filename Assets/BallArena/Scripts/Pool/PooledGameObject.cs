@@ -1,19 +1,22 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public abstract class PooledGameObject : MonoBehaviour
+namespace BallArena
 {
-    private IObjectPool<PooledGameObject> pool;
-
-    public void Create(IObjectPool<PooledGameObject> pool)
+    public abstract class PooledGameObject : MonoBehaviour
     {
-        this.pool = pool;
-    }
+        private IObjectPool<PooledGameObject> pool;
 
-    public void ReturnToPool()
-    {
-        pool.Release(this);
-    }
+        public void Create(IObjectPool<PooledGameObject> pool)
+        {
+            this.pool = pool;
+        }
 
-    public abstract void Clear();
+        public void ReturnToPool()
+        {
+            pool.Release(this);
+        }
+
+        public abstract void Clear();
+    }
 }

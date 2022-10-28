@@ -1,5 +1,8 @@
-public static class UnitIds
+namespace BallArena
 {
-    public static readonly string Real = "real";
-    public static readonly string Shadow = "shadow";
+    public static class UnitIds
+    {
+        public static readonly string Real = "real";
+        public static readonly string Shadow = "shadow";
+    }
 }

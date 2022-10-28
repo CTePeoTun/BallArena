@@ -1,7 +1,7 @@
-using System;
-using UnityEngine;
-
-public class UnitsCreator:Creator<Unit>
+namespace BallArena
 {
-    
+    public class UnitsCreator : Creator<Unit>
+    {
+
+    }
 }

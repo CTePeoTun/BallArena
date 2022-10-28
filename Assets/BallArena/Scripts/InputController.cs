@@ -1,19 +1,20 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class InputController : MonoBehaviour
+namespace BallArena
 {
-    public Action OnRestart;
-
-    [SerializeField] private KeyCode restartKey = KeyCode.R;
-
-    private void Update()
+    public class InputController : MonoBehaviour
     {
-        if (Input.GetKeyDown(restartKey))
+        public Action OnRestart;
+
+        [SerializeField] private KeyCode restartKey = KeyCode.R;
+
+        private void Update()
         {
-            OnRestart?.Invoke();
+            if (Input.GetKeyDown(restartKey))
+            {
+                OnRestart?.Invoke();
+            }
         }
     }
 }

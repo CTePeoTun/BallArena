@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 
-public interface IKeepablePath : IKeepable
+namespace BallArena
 {
-    public List<PathData> Points { get; }
-    public void SaveData();
+    public interface IKeepablePath : IKeepable
+    {
+        public List<PathData> Points { get; }
+        public void SaveData();
 
+    }
 }

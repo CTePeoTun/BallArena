@@ -1,7 +1,9 @@
 using System.Collections.Generic;
-using UnityEngine;
 
-public interface IRepeatableColor
+namespace BallArena
 {
-    public List<ColorData> Colors { get; set; }
+    public interface IRepeatableColor
+    {
+        public List<ColorData> Colors { get; set; }
+    }
 }

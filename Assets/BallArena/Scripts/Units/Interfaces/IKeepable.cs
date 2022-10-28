@@ -1,4 +1,7 @@
-public interface IKeepable
+namespace BallArena
 {
-    
+    public interface IKeepable
+    {
+
+    }
 }

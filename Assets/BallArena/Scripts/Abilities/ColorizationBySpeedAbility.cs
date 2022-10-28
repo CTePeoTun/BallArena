@@ -1,35 +1,40 @@
 using UnityEngine;
 
-public class ColorizationBySpeedAbility : Ability
+namespace BallArena
 {
-    public override string Id => AbilityIds.ColorizationBySpeed;
-    public override bool IsCondiitonForUse => SpeedIsChanged() && moveable.Speed > 3;
-
-    private IColored colored;
-    private IMoveable moveable;
-    private float speed;
-
-    public override void OnInit(Unit unit)
+    public class ColorizationBySpeedAbility : Ability
     {
-        colored = (IColored)unit;
-        moveable = (IMoveable)unit;
-    }
+        private float speedChangeColor = 3f;
 
-    public override void Update()
-    {
-        if(IsCondiitonForUse)
+        private IColored colored;
+        private IMoveable moveable;
+        private float speed;
+
+        public override string Id => AbilityIds.ColorizationBySpeed;
+        public override bool IsCondiitonForUse => SpeedIsChanged() && moveable.Speed > speedChangeColor;        
+
+        public override void Init(Unit unit)
         {
-            colored.SetColor(Color.green);
+            colored = (IColored)unit;
+            moveable = (IMoveable)unit;
         }
-    }
 
-    private bool SpeedIsChanged()
-    {
-       if (speed != moveable.Speed)
+        public override void Update()
         {
-            speed = moveable.Speed;
-            return true;
+            if (IsCondiitonForUse)
+            {
+                colored.SetColor(Color.green);
+            }
         }
-        return false;
+
+        private bool SpeedIsChanged()
+        {
+            if (speed != moveable.Speed)
+            {
+                speed = moveable.Speed;
+                return true;
+            }
+            return false;
+        }
     }
 }

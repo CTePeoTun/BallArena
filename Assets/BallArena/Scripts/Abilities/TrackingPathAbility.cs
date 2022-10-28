@@ -1,16 +1,19 @@
-public class TrackingPathAbility : Ability
+namespace BallArena
 {
-    public override string Id => AbilityIds.PathTracking;
-
-    public override bool IsCondiitonForUse => false;
-
-    public override void OnInit(Unit unit)
+    public class TrackingPathAbility : Ability
     {
-        throw new System.NotImplementedException();
-    }
+        public override string Id => AbilityIds.PathTracking;
 
-    public override void Update()
-    {
-        throw new System.NotImplementedException();
+        public override bool IsCondiitonForUse => false;
+
+        public override void Init(Unit unit)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Update()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

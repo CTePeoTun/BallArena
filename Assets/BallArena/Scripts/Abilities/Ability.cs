@@ -1,25 +1,20 @@
-public abstract class Ability : Product
+namespace BallArena
 {
-    protected Unit unit;
-
-    public abstract bool IsCondiitonForUse { get; }
-    
-    public abstract void Update();
-    public abstract void OnInit(Unit unit);
-
-    public void Init(Unit unit)
+    public abstract class Ability : Product
     {
-        this.unit = unit;
-        OnInit(unit);
-    }
+        public abstract bool IsCondiitonForUse { get; }
 
-    public virtual void Start()
-    {
+        public abstract void Update();
+        public abstract void Init(Unit unit);
 
-    }
+        public virtual void Start()
+        {
 
-    public virtual void Stop()
-    {
+        }
 
+        public virtual void Stop()
+        {
+
+        }
     }
 }

@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class ColorData
+namespace BallArena
 {
-    public Color Color;
-    public float TimeFromStart;
+    public class ColorData
+    {
+        public Color Color;
+        public float TimeFromStart;
+    }
 }

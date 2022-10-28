@@ -1,5 +1,8 @@
-public abstract class Product
+namespace BallArena
 {
-    public abstract string Id { get; }
+    public abstract class Product
+    {
+        public abstract string Id { get; }
 
+    }
 }

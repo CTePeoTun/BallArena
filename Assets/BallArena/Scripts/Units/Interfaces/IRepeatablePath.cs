@@ -1,7 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IRepeatablePath
+namespace BallArena
 {
-    public List<PathData> Points { get; set; }
+    public interface IRepeatablePath
+    {
+        public Transform Transform { get; }
+        public List<PathData> Points { get; set; }
+    }
 }

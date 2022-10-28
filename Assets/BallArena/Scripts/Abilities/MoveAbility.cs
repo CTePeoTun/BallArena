@@ -1,60 +1,68 @@
 using UnityEngine;
 
-public class MoveAbility : Ability
+namespace BallArena
 {
-    public override string Id => AbilityIds.Move;
-    public override bool IsCondiitonForUse => true;
-    private IMoveable moveable;
-    private IKeepablePath keepablePath;
-
-    public override void OnInit(Unit unit)
+    public class MoveAbility : Ability
     {
-        moveable = (IMoveable)unit;
-        keepablePath = (IKeepablePath)unit;
-    }
+        private float minSpeed = 1f;
+        private float maxSpeed = 5f;
+        private float timeChangeDirection = 1f;
 
-    float time = 0;
-    public override void Update()
-    {
-        if (IsCondiitonForUse)
+        private IMoveable moveable;
+        private IKeepablePath keepablePath;
+
+        public override string Id => AbilityIds.Move;
+        public override bool IsCondiitonForUse => true;          
+
+        public override void Init(Unit unit)
         {
-            time += Time.deltaTime;
-            if (time >= 1f)
-            {
-                keepablePath.SaveData();
-                GetSpeedAndDirection();
-                time = 0;
-            }
-            Vector3 directionMove = moveable.Direction * moveable.Speed * Time.deltaTime;
-            moveable.DistanceTraveled += Vector3.Magnitude(directionMove);
-            unit.View.transform.Translate(directionMove);
+            moveable = (IMoveable)unit;
+            keepablePath = (IKeepablePath)unit;
         }
-    }
 
-    private void GetSpeedAndDirection()
-    {
-        moveable.Speed = GetSpeed();
-        moveable.Direction = GetDirection();
-    }
+        private float time;
+        public override void Update()
+        {
+            if (IsCondiitonForUse)
+            {
+                time += Time.deltaTime;
+                if (time >= timeChangeDirection)
+                {
+                    keepablePath.SaveData();
+                    GetSpeedAndDirection();
+                    time = 0;
+                }
+                Vector3 directionMove = moveable.Direction * moveable.Speed * Time.deltaTime;
+                moveable.DistanceTraveled += Vector3.Magnitude(directionMove);
+                moveable.Transform.Translate(directionMove);
+            }
+        }
 
-    private float GetSpeed()
-    {
-        return Random.Range(1f, 5f);
-    }
+        private void GetSpeedAndDirection()
+        {
+            moveable.Speed = GetSpeed();
+            moveable.Direction = GetDirection();
+        }
 
-    private Vector3 GetDirection()
-    {
-        return new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
-    }
+        private float GetSpeed()
+        {
+            return Random.Range(minSpeed, maxSpeed);
+        }
 
-    public override void Stop()
-    {
-        keepablePath.SaveData();
-        base.Stop();       
-    }
+        private Vector3 GetDirection()
+        {
+            return new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+        }
 
-    public override void Start()
-    {
-        GetSpeedAndDirection();
+        public override void Stop()
+        {
+            keepablePath.SaveData();
+            base.Stop();
+        }
+
+        public override void Start()
+        {
+            GetSpeedAndDirection();
+        }
     }
 }

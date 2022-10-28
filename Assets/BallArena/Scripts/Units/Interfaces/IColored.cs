@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface IColored
+namespace BallArena
 {
-    public void SetColor(Color color);
+    public interface IColored
+    {
+        public void SetColor(Color color);
+    }
 }

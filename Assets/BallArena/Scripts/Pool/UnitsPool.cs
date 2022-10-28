@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class UnitsPool : GameObjectPool<UnitView>
+namespace BallArena
 {
-    
+    public class UnitsPool : GameObjectPool<UnitView>
+    {
+
+    }
 }

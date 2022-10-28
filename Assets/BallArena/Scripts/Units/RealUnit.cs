@@ -1,55 +1,59 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RealUnit : Unit, IColored, IMoveable, IKeepablePath, IKeepableColor
+namespace BallArena
 {
-    public override string Id => UnitIds.Real;
-
-    private float distanceTraveled;
-    private List<PathData> points = new List<PathData>();
-    private List<ColorData> colors = new List<ColorData>();
-
-    public float Speed { get; set; }
-    public Vector3 Direction { get; set; }
-    public float DistanceTraveled { get; set; }
-
-    public List<PathData> Points => points;
-    public List<ColorData> Colors => colors;
-
-    public float TimeStart { get; set; }
-
-    protected override void InitAbilities()
+    public class RealUnit : Unit, IColored, IMoveable, IKeepablePath, IKeepableColor
     {
-        AddAbility(AbilityIds.Move);
-        AddAbility(AbilityIds.ColorizationBySpeed);
-        AddAbility(AbilityIds.ColorizationByDistance);
-    }
+        public override string Id => UnitIds.Real;
 
-    public override void Start()
-    {
-        base.Start();
-        TimeStart = Time.time;
-    }
+        private float distanceTraveled;
+        private List<PathData> points = new List<PathData>();
+        private List<ColorData> colors = new List<ColorData>();
 
-    public void SaveData()
-    {
-        points.Add(new PathData()
+        public float Speed { get; set; }
+        public Vector3 Direction { get; set; }
+        public float DistanceTraveled { get; set; }
+
+        public List<PathData> Points => points;
+        public List<ColorData> Colors => colors;
+
+        public float TimeStart { get; set; }
+
+        public Transform Transform => view.transform;
+
+        protected override void InitAbilities()
         {
-            Speed = this.Speed,
-            Direction = this.Direction,
-            TargetPoint = View.transform.localPosition
-        });
-    }
+            AddAbility(AbilityIds.Move);
+            AddAbility(AbilityIds.ColorizationBySpeed);
+            AddAbility(AbilityIds.ColorizationByDistance);
+        }
 
-    public void SetColor(Color color)
-    {
-        colors.Add(new ColorData() { 
-            Color = color,
-            TimeFromStart = Time.time - TimeStart
-        });
-        View.SetColor(color);
-    }
+        public override void Start()
+        {
+            base.Start();
+            TimeStart = Time.time;
+        }
 
+        public void SaveData()
+        {
+            points.Add(new PathData()
+            {
+                Speed = Speed,
+                Direction = Direction,
+                TargetPoint = view.transform.localPosition
+            });
+        }
+
+        public void SetColor(Color color)
+        {
+            colors.Add(new ColorData()
+            {
+                Color = color,
+                TimeFromStart = Time.time - TimeStart
+            });
+            view.SetColor(color);
+        }
+
+    }
 }

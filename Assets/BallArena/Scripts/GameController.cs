@@ -1,34 +1,42 @@
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
-public class GameController
+namespace BallArena
 {
-    private UnitsController unitsController;
-    private List<HistoryData> history;
-
-    public GameController(UnitsController unitsController)
+    public class GameController
     {
-        this.unitsController = unitsController;
-        history = new List<HistoryData>();
-    }
+        private UnitsController unitsController;
+        private HistoryStorage historyStorage;
 
-    public void Start()
-    {
-        unitsController.Spawn(history);
-    }
+        public GameController(UnitsController unitsController, HistoryStorage historyStorage)
+        {
+            this.unitsController = unitsController;
+            this.historyStorage = historyStorage;
+        }
 
-    public void Restart()
-    {
-        SaveHistory();
-        unitsController.Clear();        
-        unitsController.Spawn(history);
-    }
+        public void Start()
+        {
+            unitsController.Spawn(historyStorage.History);
+            unitsController.Start();
+        }
 
-    private void SaveHistory()
-    {
-        List<HistoryData> history = unitsController.GetHistoryRealUnits();
-        this.history.AddRange(history);
-    }
+        public void Restart()
+        { 
+            AddHistoryToStorage();
+            Stop();
+            Start();
+        }
 
+        private void Stop()
+        {
+            unitsController.Stop();
+            unitsController.Clear();
+        }
+
+        private void AddHistoryToStorage()
+        {
+            List<HistoryData> history = unitsController.GetHistoryDataFromUnits();
+            historyStorage.AddHistory(history);
+        }
+
+    }
 }

@@ -2,31 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 
-public abstract class Creator<T> where T : Product
+namespace BallArena
 {
-    protected Dictionary<string, Type> products;
-
-    public Creator()
+    public abstract class Creator<T> where T : Product
     {
-        var subclasses = Assembly.GetAssembly(typeof(T)).GetTypes().Where(t => t.IsSubclassOf(typeof(T)));
-        products = new Dictionary<string, Type>();
-        foreach (var subclass in subclasses)
+        protected Dictionary<string, Type> products;
+
+        public Creator()
         {
-            var instance = Activator.CreateInstance(subclass) as T;
-            products.Add(instance.Id, subclass);
+            var subclasses = Assembly.GetAssembly(typeof(T)).GetTypes().Where(t => t.IsSubclassOf(typeof(T)));
+            products = new Dictionary<string, Type>();
+            foreach (var subclass in subclasses)
+            {
+                var instance = Activator.CreateInstance(subclass) as T;
+                products.Add(instance.Id, subclass);
+            }
         }
-    }
 
-    public T GetById(string id)
-    {
-        if (products.ContainsKey(id))
+        public T GetById(string id)
         {
-            Type type = products[id];
-            var product = Activator.CreateInstance(type) as T;
-            return product;
-        }        
-        return null;
+            if (products.ContainsKey(id))
+            {
+                Type type = products[id];
+                var product = Activator.CreateInstance(type) as T;
+                return product;
+            }
+            return null;
+        }
     }
 }
