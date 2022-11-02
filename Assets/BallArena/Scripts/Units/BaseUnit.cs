@@ -1,34 +1,32 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BallArena
 {
-    public abstract class Unit : Product
+    public abstract class BaseUnit
     {
         public enum StateUnit
         {
             None, Active
         }
 
-        public AbilityCreator abilityCreator;
-
+        private AbilityCreator abilityCreator;
         private StateUnit state;
         protected UnitView view;
-        protected List<Ability> abilities;
+        protected List<BaseAbility> abilities;
 
-        public List<Ability> Abilities => abilities;
+        public List<BaseAbility> Abilities => abilities;
 
-        public Unit()
+        public BaseUnit()
         {
-            abilities = new List<Ability>();
+            abilities = new List<BaseAbility>();
             state = StateUnit.None;
         }
 
-        protected abstract void InitAbilities();
-
-        public void Init(UnitView view)
+        public void Init(UnitView view, AbilityCreator abilityCreator)
         {
             this.view = view;
-            InitAbilities();
+            this.abilityCreator = abilityCreator;
         }
 
         public virtual void Start()
@@ -51,11 +49,12 @@ namespace BallArena
             }
         }
 
-        public void AddAbility(string abilityId)
+        protected TypeAbility AddAbility<TypeAbility>() where TypeAbility : BaseAbility, new()
         {
-            var ability = abilityCreator.GetById(abilityId);
+            var ability = abilityCreator.Get<TypeAbility>();
             ability.Init(this);
             abilities.Add(ability);
+            return ability;
         }
 
         public virtual void Stop()

@@ -1,11 +1,11 @@
 namespace BallArena
 {
-    public abstract class Ability : Product
+    public abstract class BaseAbility
     {
         public abstract bool IsCondiitonForUse { get; }
 
         public abstract void Update();
-        public abstract void Init(Unit unit);
+        public abstract void Init(BaseUnit unit);
 
         public virtual void Start()
         {

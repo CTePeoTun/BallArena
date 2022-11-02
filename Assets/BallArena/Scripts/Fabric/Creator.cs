@@ -2,33 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace BallArena
 {
-    public abstract class Creator<T> where T : Product
+    public abstract class Creator<T>
     {
-        protected Dictionary<string, Type> products;
+        protected List<Type> products;
 
         public Creator()
         {
-            var subclasses = Assembly.GetAssembly(typeof(T)).GetTypes().Where(t => t.IsSubclassOf(typeof(T)));
-            products = new Dictionary<string, Type>();
+            var subclasses = Assembly.GetAssembly(typeof(T)).GetTypes().Where(t => t.IsSubclassOf(typeof(T)) && t.IsAbstract == false);
+            products = new List<Type>();
             foreach (var subclass in subclasses)
             {
-                var instance = Activator.CreateInstance(subclass) as T;
-                products.Add(instance.Id, subclass);
+                products.Add(subclass);
             }
         }
 
-        public T GetById(string id)
+        public TypeProduct Get<TypeProduct>() where TypeProduct : T, new()
         {
-            if (products.ContainsKey(id))
+            if (products.Contains(typeof(TypeProduct)))
             {
-                Type type = products[id];
-                var product = Activator.CreateInstance(type) as T;
+                var product = Activator.CreateInstance<TypeProduct>();
                 return product;
             }
-            return null;
+            return default;
         }
     }
 }

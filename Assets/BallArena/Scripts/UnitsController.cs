@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace BallArena
         private UnitsCreator unitsCreator;
         private AbilityCreator abilityCreator;
         private IFrameUpdater frameUpdater;
-        private List<Unit> units;
+        private List<BaseUnit> units;
 
         public UnitsController(UnitsPool pool, UnitsCreator unitsCreator, AbilityCreator abilityCreator, IFrameUpdater frameUpdater)
         {
@@ -17,15 +18,15 @@ namespace BallArena
             this.unitsCreator = unitsCreator;
             this.abilityCreator = abilityCreator;
             this.frameUpdater = frameUpdater;
-            units = new List<Unit>();
+            units = new List<BaseUnit>();
         }
 
         public void Spawn(List<HistoryData> history)
         {
-            SpawnUnit(UnitIds.Real);
+            SpawnOriginalUnit();
             foreach (var data in history)
             {
-                SpawnUnit(UnitIds.Shadow, data);
+                SpawnShadowUnit(data);
             }
         }
 
@@ -37,25 +38,34 @@ namespace BallArena
             }
         }
 
-        private Unit SpawnUnit(string unitId, HistoryData data = null)
+        private void SpawnOriginalUnit()
+        {
+            OriginalUnit unit = GetUnit<OriginalUnit>();
+            unit.InitAbilities();
+        }
+
+        private void SpawnShadowUnit(HistoryData data)
+        {
+            ShadowUnit unit = GetUnit<ShadowUnit>();
+            unit.InitAbilities(data);
+        }
+
+        private TypeUnit GetUnit<TypeUnit>() where TypeUnit : BaseUnit, new()
+        {
+            UnitView view = GetViewFromPool();
+            TypeUnit unit = unitsCreator.Get<TypeUnit>();
+            unit.Init(view, abilityCreator);
+            frameUpdater.OnUpdate += unit.Update;
+            units.Add(unit);
+            return unit;
+        }
+
+        private UnitView GetViewFromPool()
         {
             UnitView view = pool.Get();
             view.transform.SetParent(null);
             view.transform.localPosition = Vector3.zero;
-            Unit unit = unitsCreator.GetById(unitId);
-            unit.abilityCreator = abilityCreator;
-            if (unit is IRepeatablePath)
-            {
-                ((IRepeatablePath)unit).Points = data.Paths;
-            }
-            if (unit is IRepeatableColor)
-            {
-                ((IRepeatableColor)unit).Colors = data.Colors;
-            }
-            unit.Init(view);
-            frameUpdater.OnUpdate += unit.Update;
-            units.Add(unit);
-            return unit;
+            return view;
         }
 
         public List<HistoryData> GetHistoryDataFromUnits()
@@ -68,13 +78,11 @@ namespace BallArena
                     HistoryData data = new HistoryData();
                     if (unit is IKeepablePath)
                     {
-                        IKeepablePath keepablePath = (IKeepablePath)unit;
-                        keepablePath.SaveData();
-                        data.Paths = new List<PathData>(keepablePath.Points);
+                        data.Paths = new List<PathData>(((IKeepablePath)unit).Points);
                     }
                     if (unit is IKeepableColor)
                     {
-                        data.Colors = new List<ColorData>(((IKeepableColor)unit).Colors);
+                        data.Colors = new List<Color>(((IKeepableColor)unit).Colors);
                     }
                     history.Add(data);
                 }

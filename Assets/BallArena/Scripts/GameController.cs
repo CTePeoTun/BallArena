@@ -21,7 +21,6 @@ namespace BallArena
 
         public void Restart()
         { 
-            AddHistoryToStorage();
             Stop();
             Start();
         }
@@ -29,6 +28,7 @@ namespace BallArena
         private void Stop()
         {
             unitsController.Stop();
+            AddHistoryToStorage();
             unitsController.Clear();
         }
 

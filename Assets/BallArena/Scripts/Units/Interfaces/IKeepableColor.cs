@@ -1,10 +1,10 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BallArena
 {
     public interface IKeepableColor : IKeepable
     {
-        public List<ColorData> Colors { get; }
-        public float TimeStart { get; set; }
+        public List<Color> Colors { get;}
     }
 }

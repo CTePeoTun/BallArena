@@ -1,6 +1,6 @@
 namespace BallArena
 {
-    public class UnitsCreator : Creator<Unit>
+    public class UnitsCreator : Creator<BaseUnit>
     {
 
     }
